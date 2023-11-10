@@ -1,11 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const YAML = require('yamljs');
+const swaggerUi = require('swagger-ui-express');
+
 
 const app = express();
 const PORT = process.env.PORT || 3556;
 
 app.use(bodyParser.json());
 
+const swaggerDocs = YAML.load("swagger.yaml")
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 let players = [];
 
 app.post('/players', (req, res) => {

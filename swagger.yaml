@@ -1,0 +1,170 @@
+openapi: 3.0.0
+info:
+  title: Player API
+  version: 1.0.0
+  description: API for managing players and their scores
+
+servers:
+  - url: http://localhost:3556
+    description: Development server
+
+paths:
+  /players:
+    post:
+      summary: Create a new player
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                  maxLength: 15
+                country:
+                  type: string
+                score:
+                  type: integer
+      responses:
+        '201':
+          description: Player created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  country:
+                    type: string
+                  score:
+                    type: integer
+
+  /players/{id}:
+    put:
+      summary: Update player information
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  maxLength: 15
+                score:
+                  type: integer
+      responses:
+        '200':
+          description: Player information updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  country:
+                    type: string
+                  score:
+                    type: integer
+        '404':
+          description: Player not found
+
+    delete:
+      summary: Delete a player
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Player deleted successfully
+        '404':
+          description: Player not found
+
+  /players:
+    get:
+      summary: Get a list of players sorted by score
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    country:
+                      type: string
+                    score:
+                      type: integer
+
+  /players/rank/{val}:
+    get:
+      summary: Get player information by rank
+      parameters:
+        - in: path
+          name: val
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  country:
+                    type: string
+                  score:
+                    type: integer
+        '404':
+          description: Player not found for the given rank
+
+  /players/random:
+    get:
+      summary: Get a random player
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  country:
+                    type: string
+                  score:
+                    type: integer
