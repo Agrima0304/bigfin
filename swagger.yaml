@@ -2,11 +2,7 @@ openapi: 3.0.0
 info:
   title: Player API
   version: 1.0.0
-  description: API for managing players and their scores
-
-servers:
-  - url: http://localhost:3556
-    description: Development server
+  description: API for managing player data
 
 paths:
   /players:
@@ -28,6 +24,11 @@ paths:
                   type: string
                 score:
                   type: integer
+              required:
+                - id
+                - name
+                - country
+                - score
       responses:
         '201':
           description: Player created successfully
@@ -45,9 +46,30 @@ paths:
                   score:
                     type: integer
 
+    get:
+      summary: Get the list of all players in descending order
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    country:
+                      type: string
+                    score:
+                      type: integer
+
   /players/{id}:
     put:
-      summary: Update player information
+      summary: Update player information (Only name and score can be updated)
       parameters:
         - in: path
           name: id
@@ -98,28 +120,6 @@ paths:
           description: Player deleted successfully
         '404':
           description: Player not found
-
-  /players:
-    get:
-      summary: Get a list of players sorted by score
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    name:
-                      type: string
-                    country:
-                      type: string
-                    score:
-                      type: integer
 
   /players/rank/{val}:
     get:
